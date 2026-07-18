@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>圆桌智囊 - 多维思维推演系统</title>
+  <meta name="description" content="挑选N位虚拟智者，模拟一场圆桌讨论会。AI复刻每位人物独有的思维模式进行独立分析，最终整合生成完整综合报告。">
+  <link rel="preconnect" href="https://fonts.googleapis.cn">
+  <link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin>
+  <link href="https://fonts.googleapis.cn/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=3.1">
+</head>
+<body>
+
+  <!-- ====== 顶部标题栏 ====== -->
+  <header class="header">
+    <div class="header-left">
+      <h1 data-i18n-html="header_title">圆桌<span class="accent">智囊</span></h1>
+      <div class="divider"></div>
+      <p class="subtitle" data-i18n="header_subtitle">多维思维推演系统 · Multi-dimensional Thinking Deduction</p>
+      <div class="header-footer">
+        <span class="header-company" data-i18n="header_company">爱硅蜜网络科技</span>
+        <span class="header-slogan" data-i18n="header_slogan">学习AI，拥抱AI，用好AI</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button class="lang-btn active" data-action="set-lang" data-lang="zh">中文</button>
+        <button class="lang-btn" data-action="set-lang" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ====== 1. API设置区 ====== -->
+    <section class="panel" id="panel-api">
+      <div class="panel-header" data-action="toggle-panel" data-target="panel-api">
+        <h2><span class="step-num">1</span><span data-i18n="panel1_title">API 密钥配置</span></h2>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="panel-body">
+        <div class="api-preset-row" id="api-presets">
+          <!-- 预设按钮由JS生成 -->
+        </div>
+        <div class="form-group">
+          <label data-i18n="api_url_label">API 接口地址</label>
+          <input type="text" id="api-base-url" placeholder="https://api.deepseek.com/v1/chat/completions">
+        </div>
+        <div class="form-group">
+          <label data-i18n="model_label">模型名称 / Endpoint ID</label>
+          <select id="api-model-select" class="form-select">
+          </select>
+          <input type="text" id="api-model-custom" class="form-input" placeholder="输入自定义模型名称" style="display:none; margin-top:0.5rem;">
+          <input type="hidden" id="api-model">
+        </div>
+        <div class="form-group">
+          <label data-i18n="api_key_label">API 密钥</label>
+          <div class="api-key-row">
+            <input type="password" id="api-key" placeholder="sk-xxxxxxxxxxxxxxxxxxxx">
+            <button class="api-key-toggle" data-action="toggle-api-key" data-i18n="api_key_show">显示</button>
+          </div>
+        </div>
+        <div class="api-test-row">
+          <button class="api-test-btn" id="api-test-btn" type="button" data-action="api-test">
+            <span id="api-test-btn-text" data-i18n="api_test">测试连接</span>
+          </button>
+          <div class="api-test-result" id="api-test-result"></div>
+        </div>
+        <div class="security-note">
+          <span class="icon"></span>
+          <span data-i18n="security_note">安全提示：API密钥仅临时保存在当前浏览器内存中，页面刷新或关闭标签页后立即彻底清除。网页不会将密钥写入本地存储(localStorage/cookie)，不会上传至任何第三方服务器。所有AI请求由浏览器直接转发至对应大模型服务商。</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 2. 圆桌人物选择区 ====== -->
+    <section class="panel" id="panel-chars">
+      <div class="panel-header" data-action="toggle-panel" data-target="panel-chars">
+        <h2><span class="step-num">2</span><span data-i18n="panel2_title">圆桌人物选择</span></h2>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="panel-body">
+        <!-- AI自动研究角色 -->
+        <div class="ai-research-section">
+          <div class="ai-research-label">
+            <span class="research-icon">🤖</span>
+            <span data-i18n="research_label">AI自动研究角色 — 输入任意历史人物姓名，AI自动搜集朝代、著作、代表作品、经历、思维方式等，生成完整思维档案</span>
+          </div>
+          <div class="ai-research-input-row">
+            <input type="text" id="research-input" data-i18n-placeholder="research_placeholder" placeholder="输入人物姓名，如：李白、曾国藩、柏拉图、丘吉尔…">
+            <button class="research-btn" data-action="research-character">
+              <span data-i18n="research_btn">🔍 AI自动研究</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 快捷阵容：点击一键自动入座 -->
+        <div class="preset-groups" id="preset-groups">
+          <span class="preset-label" data-i18n="preset_label">⚡ 快捷阵容（点击自动入座）：</span>
+          <!-- 按钮由JS根据 PRESET_GROUPS 生成 -->
+        </div>
+
+        <div class="character-toolbar">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="char-search" data-i18n-placeholder="search_placeholder" placeholder="搜索人物姓名…">
+          </div>
+          <div class="category-filters" id="category-filters">
+            <!-- 分类筛选由JS生成 -->
+          </div>
+        </div>
+
+        <div class="character-grid" id="character-grid">
+          <!-- 人物卡片由JS生成 -->
+        </div>
+
+        <div class="selection-bar" id="selection-bar">
+          <div class="count" id="selection-count"></div>
+          <div class="selected-names" id="selected-names">
+            <!-- 选中人物标签由JS生成 -->
+          </div>
+        </div>
+
+        <div class="roundtable-section">
+          <div class="roundtable-wrapper" id="roundtable-wrapper">
+            <!-- 圆桌SVG由JS生成 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 3. 内容输入区 ====== -->
+    <section class="panel" id="panel-input">
+      <div class="panel-header" data-action="toggle-panel" data-target="panel-input">
+        <h2><span class="step-num">3</span><span data-i18n="panel3_title">输入待分析内容</span></h2>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="panel-body">
+        <div class="input-tabs">
+          <button class="input-tab active" data-action="switch-tab" data-tab="text" data-i18n="tab_text">📝 文本输入</button>
+          <button class="input-tab" data-action="switch-tab" data-tab="pdf" data-i18n="tab_pdf">📄 PDF上传</button>
+        </div>
+
+        <div id="input-text-area">
+          <textarea class="input-textarea" id="input-text" data-i18n-placeholder="textarea_placeholder" placeholder="请输入待分析的问题、观点、方案、创作需求等…&#10;&#10;例如：请结合当下中小企业现状，分析成本控制的可行思路。"></textarea>
+        </div>
+
+        <div id="input-pdf-area" style="display:none;">
+          <div class="pdf-upload-zone" id="pdf-upload-zone" data-action="trigger-pdf-input">
+            <div class="upload-icon"></div>
+            <div class="upload-text" data-i18n="pdf_upload_text">点击选择PDF文件或拖拽至此处</div>
+            <div class="upload-hint" data-i18n="pdf_upload_hint">支持 .pdf 格式，前端本地解析提取文本，不上传至服务器</div>
+          </div>
+          <input type="file" id="pdf-file-input" accept=".pdf" style="display:none;">
+          <div id="pdf-file-info-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 4. 参数选项 ====== -->
+    <section class="panel" id="panel-options">
+      <div class="panel-header" data-action="toggle-panel" data-target="panel-options">
+        <h2><span class="step-num">4</span><span data-i18n="panel4_title">推演参数</span></h2>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="panel-body">
+        <div class="options-row">
+          <div class="option-group">
+            <label data-i18n="mode_label">推演模式：</label>
+            <div class="radio-group mode-group">
+              <button class="radio-btn mode-btn active" data-action="set-mode" data-mode="classic" data-i18n="mode_classic">⚡ 经典模式</button>
+              <button class="radio-btn mode-btn" data-action="set-mode" data-mode="parallel" data-i18n="mode_parallel">🚀 畅享模式</button>
+            </div>
+            <div class="mode-hint" id="mode-hint-classic" data-i18n="hint_classic">经典模式：角色轮流串行思考，逐人输出，互不串戏</div>
+            <div class="mode-hint" id="mode-hint-parallel" style="display:none;" data-i18n="hint_parallel">畅享模式：每位角色可指定独立API和不同大模型，并行同时思考，速度倍增</div>
+          </div>
+        </div>
+        <div class="options-row">
+          <div class="option-group">
+            <label data-i18n="depth_label">输出深度：</label>
+            <div class="radio-group">
+              <button class="radio-btn active" data-action="set-depth" data-depth="concise" data-i18n="depth_concise">精简版</button>
+              <button class="radio-btn" data-action="set-depth" data-depth="full" data-i18n="depth_full">完整版</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 畅享模式：每角色独立API配置 -->
+        <div id="parallel-api-panel" style="display:none;">
+          <div class="parallel-panel-header">
+            <h4 data-i18n="parallel_header">畅享模式 — 独立API配置</h4>
+            <p class="parallel-desc" data-i18n="parallel_desc">为每位智囊指定独立的API密钥和模型，可混合使用不同大模型（如爱因斯坦用DeepSeek、凯恩斯用豆包），所有角色将同时并行思考。</p>
+            <div class="parallel-actions">
+              <button class="parallel-action-btn primary" data-action="batch-fill-api" data-i18n="parallel_batch">📋 批量填充全局配置</button>
+              <button class="parallel-action-btn secondary" data-action="clear-char-api" data-i18n="parallel_clear">️ 清空独立配置</button>
+            </div>
+          </div>
+          <div id="parallel-api-configs">
+            <!-- 每角色API配置行由JS生成 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 5. 开始推演 ====== -->
+    <section class="panel">
+      <div class="panel-body action-section">
+        <button class="start-btn" id="start-btn" data-action="start-deduction">
+          <span id="start-btn-text" data-i18n="start_btn">开始圆桌推演</span>
+        </button>
+        <div class="progress-section" id="progress-section" style="display:none;">
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+          <div class="progress-text" id="progress-text" data-i18n="progress_prepare">准备中…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 6. 结果展示区 ====== -->
+    <section class="results-section" id="results-section">
+      <div class="results-header">
+        <h2 data-i18n="results_title">圆桌推演报告</h2>
+        <button class="copy-report-btn" data-action="copy-full-report" id="copy-full-report-btn" style="display:none;" data-i18n="copy_full_report">📋 一键复制完整报告</button>
+      </div>
+      <div class="individual-results" id="individual-results">
+        <!-- 单人发言卡片由JS生成 -->
+      </div>
+      <div class="synthesis-card" id="synthesis-card" style="display:none;">
+        <div class="synthesis-header">
+          <h3 data-i18n="synthesis_title">📋 综合汇总报告</h3>
+          <button class="copy-btn" data-action="copy-synthesis" data-i18n="copy_full">复制全文</button>
+        </div>
+        <div class="synthesis-body" id="synthesis-body">
+          <!-- 综合报告内容由JS生成 -->
+        </div>
+      </div>
+      <div class="disclaimer-box">
+        <div class="title" data-i18n="disclaimer_title">⚠️ 重要提示</div>
+        <div id="disclaimer-text"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ====== 页脚 ====== -->
+  <footer class="footer">
+    <div class="disclaimer-footer" data-i18n-html="footer_disclaimer">
+      <strong>免责声明：</strong>本项目为开源静态思想实验工具，仅用于多角度思辨学习；所有AI模拟内容并非历史人物真实言论。程序不会收集、持久储存用户输入的API密钥，密钥生命周期仅限当前会话。用户需自备各大厂商大模型API权限，调用产生的token费用由使用者自行承担。使用者应遵守网络安全法规及各大模型服务商使用协议，禁止利用本工具生成违规内容。
+    </div>
+    <div data-i18n="footer_version">圆桌智囊 · 多维思维推演系统 v1.0</div>
+  </footer>
+
+  <!-- ====== 自定义角色模态框 ====== -->
+  <div class="modal-overlay" id="custom-char-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-i18n="custom_title">创建自定义角色</h3>
+        <button class="modal-close" data-action="close-custom-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label data-i18n="custom_name_label">角色名称 *</label>
+          <input type="text" id="custom-name" data-i18n-placeholder="custom_name_ph" placeholder="例如：未来学家">
+        </div>
+        <div class="form-group">
+          <label data-i18n="custom_era_label">时代 / 背景描述</label>
+          <input type="text" id="custom-era" data-i18n-placeholder="custom_era_ph" placeholder="例如：21世纪">
+        </div>
+        <div class="form-group">
+          <label data-i18n="custom_title_label">身份 / 头衔</label>
+          <input type="text" id="custom-title" data-i18n-placeholder="custom_title_ph" placeholder="例如：科技趋势分析师">
+        </div>
+        <div class="form-group">
+          <label data-i18n="custom_profile_label">思维档案（详细描述角色的思维体系、认知视角、文风特点）*</label>
+          <textarea class="input-textarea" id="custom-profile" style="min-height:200px;" data-i18n-placeholder="custom_profile_ph" placeholder="请详细描述该角色的：&#10;1. 核心思想体系&#10;2. 思维特征与分析方法&#10;3. 认知视角与关注重点&#10;4. 文风与语言特点&#10;&#10;描述越详细，AI模拟越精准。"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" data-action="close-custom-modal" data-i18n="btn_cancel">取消</button>
+        <button class="modal-btn primary" data-action="save-custom-char" data-i18n="btn_add">添加角色</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== AI研究结果模态框 ====== -->
+  <div class="modal-overlay" id="research-modal">
+    <div class="modal research-modal">
+      <div class="modal-header">
+        <h3 id="research-modal-title" data-i18n="research_modal_title">AI角色研究报告</h3>
+        <button class="modal-close" data-action="close-research-modal">×</button>
+      </div>
+      <div class="modal-body" id="research-modal-body">
+        <!-- 研究结果由JS生成 -->
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" data-action="close-research-modal" data-i18n="btn_cancel">取消</button>
+        <button class="modal-btn primary" data-action="confirm-research" id="confirm-research-btn" style="display:none;" data-i18n="btn_join">加入圆桌</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CDN: PDF.js ====== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- ====== CDN: marked (Markdown渲染) ====== -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+  <!-- ====== 人物数据 ====== -->
+  <script src="characters.js?v=3.2"></script>
+  <!-- ====== 应用逻辑 ====== -->
+  <script src="app.js?v=3.2"></script>
+</body>
+</html>
