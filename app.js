@@ -353,7 +353,17 @@ function displayEra(ch) {
 function displayTitle(ch) {
   if (!ch) return '';
   if (ch.title === '自定义角色') return t('default_title');
+  if (state.lang === 'en' && typeof CHARACTER_TITLE_EN !== 'undefined' && CHARACTER_TITLE_EN[ch.id]) {
+    return CHARACTER_TITLE_EN[ch.id];
+  }
   return ch.title || '';
+}
+function displayRegion(ch) {
+  if (!ch || !ch.region) return '';
+  if (state.lang === 'en' && typeof CHARACTER_REGION_EN !== 'undefined' && CHARACTER_REGION_EN[ch.region]) {
+    return CHARACTER_REGION_EN[ch.region];
+  }
+  return ch.region;
 }
 
 // 应用语言：更新所有带 data-i18n 属性的静态/动态文本，并重渲染数据驱动部分
@@ -726,7 +736,7 @@ function renderCharacterGrid() {
         <div class="avatar" style="background:${cat.color}">${charName(ch).charAt(0)}</div>
         <div class="name">${charName(ch)}</div>
         <div class="era">${displayEra(ch)}</div>
-        ${ch.region ? `<div class="region-badge">${ch.region}</div>` : ''}
+        ${ch.region ? `<div class="region-badge">${displayRegion(ch)}</div>` : ''}
         <div class="title-text">${displayTitle(ch)}</div>
       </div>
     `;

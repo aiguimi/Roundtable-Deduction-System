@@ -1758,9 +1758,86 @@ const CHARACTER_NAME_EN = {
   freud: "Sigmund Freud"
 };
 
+// 人物简介英文名映射（界面展示用；与中文 title 一一对应）
+const CHARACTER_TITLE_EN = {
+  einstein: "Theoretical Physicist · Father of Relativity",
+  darwin: "Naturalist · Founder of Evolutionary Theory",
+  tesla: "Inventor · Pioneer of Alternating Current",
+  turing: "Mathematician · Father of Computer Science",
+  keynes: "Founder of Macroeconomics",
+  smith: "Father of Classical Economics",
+  hayek: "Austrian School · Defender of Free Markets",
+  schumpeter: "Founder of Innovation Theory",
+  sunwu: "Spring & Autumn Strategist · Author of The Art of War",
+  clausewitz: "Prussian Military Theorist · Author of On War",
+  maozedong: "Strategist · Military Thinker",
+  socrates: "Ancient Greek Philosopher · Father of Western Philosophy",
+  kant: "Founder of German Classical Philosophy",
+  nietzsche: "German Philosopher · Revaluator of Values",
+  wittgenstein: "Austro-British Philosopher · Founder of Analytic Philosophy",
+  sushi: "Northern Song Literatus · Master of Poetry, Calligraphy & Painting",
+  luxun: "Modern Man of Letters · Thinker",
+  shakespeare: "English Playwright · Poet",
+  caoxueqin: "Qing Writer · Author of Dream of the Red Chamber",
+  confucius: "Spring & Autumn Thinker · Founder of Confucianism",
+  laozi: "Spring & Autumn Thinker · Founder of Taoism",
+  wangyangming: "Ming Thinker · Synthesizer of the School of Mind",
+  shangyang: "Legalist of the Warring States · Leader of the Shang Reform",
+  mengzi: "Warring States Confucian · The Second Sage",
+  zhuangzi: "Warring States Taoist · Nanhua True Man",
+  zhugeliang: "Shu Han of the Three Kingdoms · Chancellor & Strategist",
+  wanganshi: "Northern Song · Reformist Chancellor",
+  liangqichao: "Modern · Banner-Bearer of Intellectual Enlightenment",
+  newton: "English Physicist · Founder of Classical Mechanics",
+  voltaire: "French Enlightenment Thinker",
+  tolstoy: "Russian Writer · Founder of Tolstoyism",
+  davinci: "Italian · Polymath Artist & Scientist",
+  churchill: "British Prime Minister · WWII Leader",
+  bacon: "English Philosopher · Pioneer of the Scientific Method",
+  bentham: "English Jurist · Founder of Utilitarianism",
+  descartes: "French Philosopher · Co-founder of Analytic Geometry",
+  rousseau: "French Enlightenment Thinker",
+  montesquieu: "French Thinker · Proposer of Separation of Powers",
+  napoleon: "French Military Leader · Napoleonic Code",
+  hegel: "German Philosopher · Master of Dialectics",
+  marx: "German Thinker · Founder of Marxism",
+  goethe: "German Writer · Author of Faust",
+  gauss: "German Mathematician · Prince of Mathematics",
+  weber: "German Sociologist · Analyst of Modernity",
+  dostoevsky: "Russian Writer · Excavator of the Soul",
+  mendeleev: "Russian Chemist · Periodic Law",
+  pavlov: "Russian Physiologist · Conditioned Reflex",
+  lenin: "Russian Revolutionary · Leninism",
+  galileo: "Italian Astronomer · Father of Modern Science",
+  machiavelli: "Italian Political Thinker · Author of The Prince",
+  dante: "Italian Poet · Author of The Divine Comedy",
+  buffett: "Investor · Chairman of Berkshire Hathaway",
+  soros: "Financier · Founder of the Quantum Fund",
+  graham: "Father of Value Investing",
+  dalio: "Hedge Fund · Founder of Bridgewater",
+  friedman: "Monetarist · Nobel Laureate in Economics",
+  lincoln: "U.S. President · Unifier & Emancipator",
+  freud: "Austrian Psychologist · Father of Psychoanalysis"
+};
+
+// 地区徽章英文名映射（界面展示用）
+const CHARACTER_REGION_EN = {
+  "中国": "China",
+  "欧洲": "Europe",
+  "欧洲·英": "Europe · UK",
+  "欧洲·法": "Europe · France",
+  "欧洲·俄": "Europe · Russia",
+  "欧洲·意": "Europe · Italy",
+  "欧洲·德": "Europe · Germany",
+  "美国": "USA",
+  "美国·华尔街": "USA · Wall Street"
+};
+
 if (typeof window !== 'undefined') {
   window.API_PRESETS = API_PRESETS;
   window.CHARACTER_NAME_EN = CHARACTER_NAME_EN;
+  window.CHARACTER_TITLE_EN = CHARACTER_TITLE_EN;
+  window.CHARACTER_REGION_EN = CHARACTER_REGION_EN;
   window.CATEGORIES = CATEGORIES;
   window.CHARACTERS = CHARACTERS;
   window.SYSTEM_CONSTRAINTS = SYSTEM_CONSTRAINTS;
